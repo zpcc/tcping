@@ -1,0 +1,26 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - "v*"
+      - "c*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup golang
+        uses: actions/setup-go@v2
+        with:
+          go-version: "^1.13.1"
+      - name: Build tcping
+        run: make release
+      - name: Publish
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: tcping-*
+          tag: ${{ github.ref }}
+          file_glob: true

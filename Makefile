@@ -22,6 +22,7 @@ dist: dist-clean
 	mkdir -p dist/linux/armhf && GOOS=linux GOARCH=arm GOARM=6 go build -ldflags "$(LDFLAGS)" -o dist/linux/armhf/tcping
 	mkdir -p dist/darwin/amd64 && GOOS=darwin GOARCH=amd64 go build -ldflags "$(LDFLAGS)" -o dist/darwin/amd64/tcping
 	mkdir -p dist/windows/amd64 && GOOS=windows GOARCH=amd64 GOARM=6 go build -ldflags "$(LDFLAGS)" -o dist/windows/amd64/tcping.exe
+	mkdir -p dist/windows/386 && GOOS=windows GOARCH=386 go build -ldflags "$(LDFLAGS)" -o dist/windows/386/tcping.exe
 
 release: dist
 	tar -cvzf tcping-alpine-linux-amd64-$(TAG).tar.gz -C dist/alpine-linux/amd64 tcping
@@ -29,4 +30,5 @@ release: dist
 	tar -cvzf tcping-linux-armel-$(TAG).tar.gz -C dist/linux/armel tcping
 	tar -cvzf tcping-linux-armhf-$(TAG).tar.gz -C dist/linux/armhf tcping
 	tar -cvzf tcping-darwin-amd64-$(TAG).tar.gz -C dist/darwin/amd64 tcping
-	tar -cvzf tcping-windows-amd64-$(TAG).tar.gz -C dist/windows/amd64 tcping.exe
+	zip -j -q tcping-windows-amd64-$(TAG) dist/windows/amd64/tcping.exe
+	zip -j -q tcping-windows-386-$(TAG) dist/windows/386/tcping.exe
