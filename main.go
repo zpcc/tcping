@@ -18,6 +18,7 @@ var (
 	version     string
 	gitCommit   string
 	counter     int
+	proxy       string
 	timeout     string
 	interval    string
 	sigs        chan os.Signal
@@ -123,6 +124,7 @@ var rootCmd = cobra.Command{
 			Host:     parseHost,
 			Port:     port,
 			Counter:  counter,
+			Proxy:    proxy,
 			Protocol: protocol,
 		}
 		var pinger ping.Pinger
@@ -161,12 +163,13 @@ var rootCmd = cobra.Command{
 func init() {
 	rootCmd.Flags().BoolVarP(&showVersion, "version", "v", false, "show the version and exit")
 	rootCmd.Flags().IntVarP(&counter, "counter", "c", 4, "ping counter")
+	rootCmd.Flags().StringVar(&proxy, "proxy", "", "Use HTTP proxy")
 	rootCmd.Flags().StringVarP(&timeout, "timeout", "T", "1s", `connect timeout, units are "ns", "us" (or "µs"), "ms", "s", "m", "h"`)
 	rootCmd.Flags().StringVarP(&interval, "interval", "I", "1s", `ping interval, units are "ns", "us" (or "µs"), "ms", "s", "m", "h"`)
 
 	rootCmd.Flags().BoolVarP(&httpMode, "http", "H", false, `Use "HTTP" mode. will ignore URI Schema, force to http`)
-	rootCmd.Flags().BoolVar(&httpHead, "head", false, `Use POST instead of GET in http mode.`)
-	rootCmd.Flags().BoolVar(&httpPost, "post", false, `Use HEAD instead of GET in http mode.`)
+	rootCmd.Flags().BoolVar(&httpHead, "head", false, `Use HEAD instead of GET in http mode.`)
+	rootCmd.Flags().BoolVar(&httpPost, "post", false, `Use POST instead of GET in http mode.`)
 	rootCmd.Flags().StringVar(&httpUA, "user-agent", "tcping", `Use custom UA in http mode.`)
 
 	rootCmd.Flags().StringArrayVarP(&dnsServer, "dns-server", "D", nil, `Use the specified dns resolve server.`)
